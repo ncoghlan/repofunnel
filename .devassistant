@@ -1,0 +1,22 @@
+dependencies:
+- rpm:
+  - python3
+- if $venv and not $py3:
+  - rpm:
+    - python-virtualenv
+- if not $venv:
+  - rpm:
+    - python${py3}-django
+- rpm:
+  - docker-io
+devassistant_version: 0.11.1
+docker_port_exposed: 8000
+original_kwargs:
+  docker: true
+  github: ncoghlan
+  name: /home/ncoghlan/fedoradevel/repo-integrator
+  py3: 3
+  venv: venv
+project_type:
+- python
+- django
