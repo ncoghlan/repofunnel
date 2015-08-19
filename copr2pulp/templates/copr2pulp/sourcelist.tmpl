@@ -1,0 +1,18 @@
+{% if remote_repos %}
+    <ul>
+    {% for repo in remote_repos %}
+        <li><a href="{{ repo.display_url }}/">{{ repo.name }}</a>: {{ repo.description }}</li>
+        <ul>
+        {% if repo.yum_repos %}
+            {% for repo_name, repo_url in repo.yum_repos.items %}
+                <li><a href="{{ repo_url }}/">{{ repo_name }}</a></li>
+            {% endfor %}
+        {% else %}
+            <li>No repos are defined.</li>
+        {% endif %}
+        </ul>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No remote sources are available.</p>
+{% endif %}
