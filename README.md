@@ -1,5 +1,5 @@
-Repo Integrator
-===============
+RepoFunnel
+==========
 
 Uses Pulp to integrate disparate RPM repos into a single unified source.
 
