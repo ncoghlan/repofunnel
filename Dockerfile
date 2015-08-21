@@ -2,12 +2,12 @@
 FROM fedora:21
 
 WORKDIR /srv
-RUN yum -y install python3 && pyvenv "repo_integrator"
+RUN yum -y install python3 && pyvenv "repofunnel"
 
-ADD . /srv/repo_integrator/repo_integrator
-RUN cd "repo_integrator" && source bin/activate && pip3 install -r "repo_integrator/requirements.txt"
+ADD . /srv/repofunnel/repofunnel
+RUN cd "repofunnel" && source bin/activate && pip3 install -r "repofunnel/requirements.txt"
 
 
 EXPOSE 8000
-CMD source /srv/repo_integrator/bin/activate && \
- /srv/repo_integrator/repo_integrator/manage.py runserver 0.0.0.0:8000
+CMD source /srv/repofunnel/bin/activate && \
+ /srv/repofunnel/repofunnel/manage.py runserver 0.0.0.0:8000
