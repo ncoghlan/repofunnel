@@ -7,8 +7,8 @@ DROOT=$(echo $1 | sed -e 's/\/$//')
 
 if [ -z $DROOT ]
 then
-    echo "specify a directory in which to store data" 1>&2
-    exit 1
+    DROOT=/var/_pulp_storage
+    echo "No data store specified, defaulting to $DROOT" 1>&2
 fi
 
 if [ ! -d $DROOT ]
@@ -62,14 +62,45 @@ fi
 echo setting up data directories
 docker run -it --rm $LINKS $MOUNTS --hostname pulpapi pulp/base bash -c /setup.sh
 
-echo Starting beat
-docker run $MOUNTS $LINKS -d --name beat pulp/worker beat
-echo Starting resource_manager
-docker run $MOUNTS $LINKS -d --name resource_manager pulp/worker resource_manager
-echo Starting workers
-docker run $MOUNTS $LINKS -d --name worker1 pulp/worker worker 1
-docker run $MOUNTS $LINKS -d --name worker2 pulp/worker worker 2
-echo Starting main Pulp API
-docker run $MOUNTS -v $DROOT/var/log/httpd-pulpapi:/var/log/httpd $LINKS -d --name pulpapi --hostname pulpapi -p 443:443 -p 80:80 pulp/apache
-echo Starting crane
-docker run $MOUNTS -v $DROOT/var/log/httpd-crane:/var/log/httpd -d --name crane -p 5000:80 pulp/crane-allinone
+if docker start beat 2> /dev/null
+then
+    echo beat already exists
+else
+    echo running beat
+    docker run $MOUNTS $LINKS -d --name beat pulp/worker beat
+fi
+if docker start resource_manager 2> /dev/null
+then
+    echo resource_manager already exists
+else
+    echo running resource_manager
+    docker run $MOUNTS $LINKS -d --name resource_manager pulp/worker resource_manager
+fi
+if docker start worker1 2> /dev/null
+then
+    echo worker1 already exists
+else
+    echo running worker1
+    docker run $MOUNTS $LINKS -d --name worker1 pulp/worker worker 1
+fi
+if docker start worker2 2> /dev/null
+then
+    echo worker2 already exists
+else
+    echo running worker2
+    docker run $MOUNTS $LINKS -d --name worker2 pulp/worker worker 2
+fi
+if docker start pulpapi 2> /dev/null
+then
+    echo pulpapi already exists
+else
+    echo running pulpapi
+    docker run $MOUNTS -v $DROOT/var/log/httpd-pulpapi:/var/log/httpd:Z $LINKS -d --name pulpapi --hostname pulpapi -p 443:443 -p 80:80 pulp/apache
+fi
+if docker start crane 2> /dev/null
+then
+    echo crane already exists
+else
+    echo running crane
+    docker run $MOUNTS -v $DROOT/var/log/httpd-crane:/var/log/httpd:Z -d --name crane -p 5000:80 pulp/crane-allinone
+fi
