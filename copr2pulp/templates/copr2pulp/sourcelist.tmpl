@@ -1,3 +1,5 @@
+<h2>Remote COPR repos:</h2>
+
 {% if remote_repos %}
     <ul>
     {% for repo in remote_repos %}
@@ -16,6 +18,7 @@
 {% else %}
     <p>No remote sources are available.</p>
 {% endif %}
+<h2>Local Pulp repos:</h2>
 {% if local_repos %}
     <ul>
     {% for repo in local_repos %}
