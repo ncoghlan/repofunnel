@@ -34,4 +34,4 @@ def home(request):
         targets = pulp_info.json()
     # Display them both
     context = {"remote_repos": sources, "local_repos": targets}
-    return render(request, 'copr2pulp/sourcelist.tmpl', context=context)
+    return render(request, 'copr2pulp/sourcelist.html', context=context)

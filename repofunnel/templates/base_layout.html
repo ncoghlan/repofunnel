@@ -1,0 +1,36 @@
+<!-- Overall page layout for the RepoFunnel UI -->
+
+<!DOCTYPE html>
+<!--[if IE 9]><html class="ie9"><![endif]-->
+<!--[if gt IE 9]><!-->
+<html>
+<!--<![endif]-->
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="{% block favicon %}{% endblock %}">
+    {% block patternfly_headers %}{% endblock %}
+  </head>
+  <body>
+    {% block navbar %}{% endblock %}
+    {% block content_container %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    {% block breadcrumbs %}{% endblock %}
+                </div><!-- /col -->
+            </div><!-- /row -->
+            <div class="row">
+                {% block sidebar_left %}{% endblock %}
+                <div class="col-md-12">
+                    {% block content %}{% endblock %}
+                </div><!-- /col -->
+                {% block sidebar_right %}{% endblock %}
+            </div><!-- /row -->
+            <div class="row">
+                <div class="col-md-12">
+                    {% block footer %}{% endblock %}
+                </div><!-- /col -->
+            </div><!-- /row -->
+    {% endblock %}
+  </body>
+</html>

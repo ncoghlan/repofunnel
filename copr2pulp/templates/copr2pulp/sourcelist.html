@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Remote COPR repos:</h2>
+
+<table id="remote_repos" class="datatable table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Repository</th>
+            <th>Description</th>
+            <th>Package Repositories</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% if remote_repos %}
+        {% for repo in remote_repos %}
+            <tr>
+                <td><a href="{{ repo.display_url }}/">{{ repo.name }}</a></td>
+                <td>{{ repo.description }}</td>
+                <td><ul>
+                    {% if repo.yum_repos %}
+                        {% for repo_name, repo_url in repo.yum_repos.items %}
+                            <li><a href="{{ repo_url }}/">{{ repo_name }}</a></li>
+                        {% endfor %}
+                    {% else %}
+                        <li>No repos are defined.</li>
+                    {% endif %}
+                </ul></td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <p>No remote sources are available.</p>
+    {% endif %}
+    </tbody>
+</table>
+<h2>Local Pulp repos:</h2>
+<table id="local_repos" class="datatable table table-striped table-bordered"></table>
+{% if local_repos %}
+    <ul>
+    {% for repo in local_repos %}
+        <li>{{ repo }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No local targets are defined.</p>
+{% endif %}
+<script>
+    // Initialize Datatables
+    $(document).ready( function() {
+        $('#remote_repos').dataTable();
+        var None = null; // Quick hack pending replacement with a REST call
+        var local_repo_data = {{ local_repos|safe }};
+        $('#local_repos').DataTable( {
+            data: local_repo_data,
+            columns: [
+                { title: "ID", data: "id" },
+                { title: "Repository", data: "display_name" },
+                { title: "Description", data: "description" },
+                { title: "Notes", data: "notes" }
+            ]
+        } );
+    });
+</script>
+{% endblock %}
