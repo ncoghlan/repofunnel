@@ -16,3 +16,12 @@
 {% else %}
     <p>No remote sources are available.</p>
 {% endif %}
+{% if local_repos %}
+    <ul>
+    {% for repo in local_repos %}
+        <li>{{ repo }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No local targets are defined.</p>
+{% endif %}
