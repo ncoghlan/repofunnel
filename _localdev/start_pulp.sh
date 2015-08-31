@@ -1,106 +1,96 @@
 #!/usr/bin/env bash
 
-# the "docker root" as I'm calling it, which is where all shared and persistent
-# storage is located for the pulp containers.
-# trailing slash is removed if present
-DROOT=$(echo $1 | sed -e 's/\/$//')
-
-if [ -z $DROOT ]
-then
-    DROOT=/var/_pulp_storage
-    echo "No data store specified, defaulting to $DROOT" 1>&2
-fi
-
-if [ ! -d $DROOT ]
-then
-    echo "specified path is not a directory" 1>&2
-    exit 1
-fi
-
-
-echo Launching in $DROOT
-
-# check if a directory exists, and if not, make it
-function ensure_dir {
-    if [ ! -d $DROOT$1 ]
-    then
-        echo creating $DROOT$1
-        mkdir -p $DROOT$1
-    fi
-}
-
-# make sure all of these directories exist
-ensure_dir /var/log/httpd-pulpapi
-ensure_dir /var/log/httpd-crane
-ensure_dir /etc/pulp
-ensure_dir /etc/pki/pulp
-ensure_dir /var/lib/pulp
-
-LINKS="--link qpid:qpid --link db:db"
-MOUNTS="-v $DROOT/etc/pulp:/etc/pulp:Z -v $DROOT/etc/pki/pulp:/etc/pki/pulp:Z -v $DROOT/var/lib/pulp:/var/lib/pulp:Z -v /dev/log:/dev/log:Z"
+LINKS="--link pulp_qpid:qpid --link pulp_db:db"
 
 # try to start an existing one, and only run a new one if that fails
-if docker start db 2> /dev/null
+if docker start pulp_db 2> /dev/null
 then
-    echo db already exists
+    echo pulp_db already exists
 else
-    echo running db
-    docker run -d --name db -p 27017:27017 pulp/mongodb
+    echo running pulp_db
+    docker run -d --name pulp_db -p 27017:27017 pulp/mongodb
 fi
 
 # try to start an existing one, and only run a new one if that fails
-if docker start qpid 2> /dev/null
+if docker start pulp_qpid 2> /dev/null
 then
-    echo qpid already exists
+    echo pulp_qpid already exists
 else
-    echo running qpid
-    docker run -d --name qpid -p 5672:5672 pulp/qpid
+    echo running pulp_qpid
+    docker run -d --name pulp_qpid -p 5672:5672 pulp/qpid
 fi
 
-# run the setup script that populates $DROOT with boiler-plate config files and
-# data directories
-echo setting up data directories
-docker run -it --rm $LINKS $MOUNTS --hostname pulpapi pulp/base bash -c /setup.sh
+# We create a data container to hold all of Pulp's working directories
+MOUNTS="--volumes-from pulp_data -v /dev/log:/dev/log:Z"
+if docker start pulp_data 2> /dev/null
+then
+    echo Shared volumes for Pulp already created
+else
+    echo Launching Pulp data container
+    # We leave out /dev/log which causes the pulp-manage-db call to fail
+    docker run -it $LINKS --name pulp_data \
+                -v /var/log/httpd-pulpapi \
+                -v /var/log/httpd-crane \
+                -v /etc/pulp \
+                -v /etc/pki/pulp \
+                -v /var/lib/pulp \
+                pulp/base bash -c /setup.sh
+    # Then we run pulp-manage-db directly using the host network settings,
+    # since it looks up localhost, rather than db
+    docker run -it --rm $MOUNTS --net=host \
+               pulp/base runuser -u apache pulp-manage-db
+fi
 
-if docker start beat 2> /dev/null
+PULPAPI_LOG=$(sudo docker inspect pulp_data | python3 -c 'import json, sys; data = [vol["Source"] for vol in json.loads(sys.stdin.read())[0]["Mounts"] if vol["Destination"] == "/var/log/httpd-pulpapi"];print(data[0])')
+CRANE_LOG=$(sudo docker inspect pulp_data | python3 -c 'import json, sys; data = [vol["Source"] for vol in json.loads(sys.stdin.read())[0]["Mounts"] if vol["Destination"] == "/var/log/httpd-crane"];print(data[0])')
+
+if docker start pulp_beat 2> /dev/null
 then
-    echo beat already exists
+    echo pulp_beat already exists
 else
-    echo running beat
-    docker run $MOUNTS $LINKS -d --name beat pulp/worker beat
+    echo running pulp_beat
+    docker run $MOUNTS $LINKS -d --name pulp_beat pulp/worker beat
 fi
-if docker start resource_manager 2> /dev/null
+if docker start pulp_resource_manager 2> /dev/null
 then
-    echo resource_manager already exists
+    echo pulp_resource_manager already exists
 else
-    echo running resource_manager
-    docker run $MOUNTS $LINKS -d --name resource_manager pulp/worker resource_manager
+    echo running pulp_resource_manager
+    docker run $MOUNTS $LINKS -d --name pulp_resource_manager pulp/worker resource_manager
 fi
-if docker start worker1 2> /dev/null
+if docker start pulp_worker1 2> /dev/null
 then
-    echo worker1 already exists
+    echo pulp_worker1 already exists
 else
-    echo running worker1
-    docker run $MOUNTS $LINKS -d --name worker1 pulp/worker worker 1
+    echo running pulp_worker1
+    docker run $MOUNTS $LINKS -d --name pulp_worker1 pulp/worker worker 1
 fi
-if docker start worker2 2> /dev/null
+if docker start pulp_worker2 2> /dev/null
 then
-    echo worker2 already exists
+    echo pulp_worker2 already exists
 else
-    echo running worker2
-    docker run $MOUNTS $LINKS -d --name worker2 pulp/worker worker 2
+    echo running pulp_worker2
+    docker run $MOUNTS $LINKS -d --name pulp_worker2 pulp/worker worker 2
 fi
+
+# /var/lib/pulp is not owned by Apache when mounted from a data container...
 if docker start pulpapi 2> /dev/null
 then
     echo pulpapi already exists
 else
     echo running pulpapi
-    docker run $MOUNTS -v $DROOT/var/log/httpd-pulpapi:/var/log/httpd:Z $LINKS -d --name pulpapi --hostname pulpapi -p 443:443 -p 80:80 pulp/apache
+    docker run $MOUNTS -v $PULPAPI_LOG:/var/log/httpd:Z $LINKS -d \
+           --name pulpapi --hostname pulpapi -p 443:443 -p 80:80 \
+           pulp/apache bash -c 'chown apache /var/lib/pulp && /run.sh'
 fi
 if docker start crane 2> /dev/null
 then
     echo crane already exists
 else
     echo running crane
-    docker run $MOUNTS -v $DROOT/var/log/httpd-crane:/var/log/httpd:Z -d --name crane -p 5000:80 pulp/crane-allinone
+    docker run $MOUNTS -v $CRANE_LOG:/var/log/httpd:Z -d \
+           --name crane -p 5000:80 \
+           pulp/crane-allinone bash -c 'chown apache /var/lib/pulp && /usr/sbin/httpd -D FOREGROUND'
 fi
+
+#docker run $MOUNTS -v $PULPAPI_LOG:/var/log/httpd:Z $LINKS -d pulp/apache bash
