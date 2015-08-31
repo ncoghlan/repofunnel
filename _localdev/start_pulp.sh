@@ -27,18 +27,17 @@ then
     echo Shared volumes for Pulp already created
 else
     echo Launching Pulp data container
-    # We leave out /dev/log which causes the pulp-manage-db call to fail
+    # First we create the container to hold the volumes
     docker run -it $LINKS --name pulp_data \
                 -v /var/log/httpd-pulpapi \
                 -v /var/log/httpd-crane \
                 -v /etc/pulp \
                 -v /etc/pki/pulp \
                 -v /var/lib/pulp \
-                pulp/base bash -c /setup.sh
-    # Then we run pulp-manage-db directly using the host network settings,
-    # since it looks up localhost, rather than db
-    docker run -it --rm $MOUNTS --net=host \
-               pulp/base runuser -u apache pulp-manage-db
+                pulp/base echo "Created Pulp data container"
+    # Then we run a separate container to initialise them
+    docker run -it --rm $LINKS $MOUNTS --hostname pulpapi \
+           pulp/base bash -c /setup.sh
 fi
 
 PULPAPI_LOG=$(sudo docker inspect pulp_data | python3 -c 'import json, sys; data = [vol["Source"] for vol in json.loads(sys.stdin.read())[0]["Mounts"] if vol["Destination"] == "/var/log/httpd-pulpapi"];print(data[0])')
@@ -73,7 +72,7 @@ else
     docker run $MOUNTS $LINKS -d --name pulp_worker2 pulp/worker worker 2
 fi
 
-# /var/lib/pulp is not owned by Apache when mounted from a data container...
+# /var/lib/pulp is initially owned by root when mounted from a data container
 if docker start pulpapi 2> /dev/null
 then
     echo pulpapi already exists
