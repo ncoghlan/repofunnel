@@ -27,15 +27,15 @@ then
     echo Shared volumes for Pulp already created
 else
     echo Launching Pulp data container
-    # First we create the container to hold the volumes
+    # First we create a plain CentOS data container to own the volumes
     docker run -it $LINKS --name pulp_data \
                 -v /var/log/httpd-pulpapi \
                 -v /var/log/httpd-crane \
                 -v /etc/pulp \
                 -v /etc/pki/pulp \
                 -v /var/lib/pulp \
-                pulp/base echo "Created Pulp data container"
-    # Then we run a separate container to initialise them
+                centos:7 echo "Created Pulp data container"
+    # Then we run setup in the Pulp base container to initialise them
     docker run -it --rm $LINKS $MOUNTS --hostname pulpapi \
            pulp/base bash -c /setup.sh
 fi
