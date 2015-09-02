@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="51cm" height="28cm" viewBox="37 14 1006 541" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <path style="fill: #ffffff" d="M 540 38 C 588.5,24.5 612.75,20 661.25,20 C 709.75,20 734,24.5 782.5,38 L 782.5,110 C 734,123.5 709.75,128 661.25,128 C 612.75,128 588.5,123.5 540,110 L 540,38z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 540 38 C 588.5,24.5 612.75,20 661.25,20 C 709.75,20 734,24.5 782.5,38 L 782.5,110 C 734,123.5 709.75,128 661.25,128 C 612.75,128 588.5,123.5 540,110 L 540,38"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 540 38 C 588.5,51.5 612.75,56 661.25,56 C 709.75,56 734,51.5 782.5,38"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="661.25" y="79">
+      <tspan x="661.25" y="79">Versioned Software Storage</tspan>
+      <tspan x="661.25" y="95">(dist-git)</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="160" x2="40" y2="200"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="160" x2="175.105" y2="160"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="200" x2="175.105" y2="200"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="110.93" y="185">
+      <tspan x="110.93" y="185">VCS/Tarball</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="220" x2="40" y2="260"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="220" x2="175.105" y2="220"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="260" x2="175.105" y2="260"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="110.93" y="245">
+      <tspan x="110.93" y="245">pypi.python.org</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="280" x2="40" y2="320"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="280" x2="175.105" y2="280"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="320" x2="175.105" y2="320"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="110.93" y="305">
+      <tspan x="110.93" y="305">npm.org</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="440" y="180" width="207.8" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="440" y="180" width="207.8" height="54"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="543.9" y="202.9">
+      <tspan x="543.9" y="202.9">Scratch Build Service</tspan>
+      <tspan x="543.9" y="218.9">(COPR)</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="240" y="100" width="220" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="240" y="100" width="220" height="54"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="350" y="122.9">
+      <tspan x="350" y="122.9">Upstream Release Monitoring</tspan>
+      <tspan x="350" y="138.9">(Anitya)</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="680" y="180" width="207.8" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="680" y="180" width="207.8" height="54"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="783.9" y="202.9">
+      <tspan x="783.9" y="202.9">Release Build Service</tspan>
+      <tspan x="783.9" y="218.9">(Koji)</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="240" y="387" width="220" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="240" y="387" width="220" height="54"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="350" y="409.9">
+      <tspan x="350" y="409.9">Personalised Repo Service</tspan>
+      <tspan x="350" y="425.9">(RepoFunnel)</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="320" y="500" width="220" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="320" y="500" width="220" height="54"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="430" y="522.9">
+      <tspan x="430" y="522.9">Package Review Service</tspan>
+      <tspan x="430" y="538.9">(Fresque)</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="603.471" y1="173.941" x2="653.629" y2="134.059"/>
+    <polygon style="fill: #000000" points="597.6,178.608 602.316,168.471 603.471,173.941 608.539,176.298 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="597.6,178.608 602.316,168.471 603.471,173.941 608.539,176.298 "/>
+    <polygon style="fill: #000000" points="659.5,129.392 654.784,139.529 653.629,134.059 648.561,131.702 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="659.5,129.392 654.784,139.529 653.629,134.059 648.561,131.702 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="724.107" y1="174.231" x2="669.093" y2="133.769"/>
+    <polygon style="fill: #000000" points="730.149,178.675 719.13,176.778 724.107,174.231 725.055,168.722 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="730.149,178.675 719.13,176.778 724.107,174.231 725.055,168.722 "/>
+    <polygon style="fill: #000000" points="663.051,129.325 674.07,131.222 669.093,133.769 668.145,139.278 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="663.051,129.325 674.07,131.222 669.093,133.769 668.145,139.278 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="340" x2="40" y2="380"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="340" x2="175.105" y2="340"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="380" x2="175.105" y2="380"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="110.93" y="365">
+      <tspan x="110.93" y="365">etc...</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="560" y="500" width="220.3" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="560" y="500" width="220.3" height="54"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="670.15" y="522.9">
+      <tspan x="670.15" y="522.9">Continuous Integration Service</tspan>
+      <tspan x="670.15" y="538.9">(Taskotron)</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="760" y="280" width="220" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="760" y="280" width="220" height="54"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="870" y="302.9">
+      <tspan x="870" y="302.9">Downstream Release Review</tspan>
+      <tspan x="870" y="318.9">(Bodhi)</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="783.9" y1="234" x2="809.547" y2="271.934"/>
+    <polygon style="fill: #000000" points="813.748,278.148 804.005,272.664 809.547,271.934 812.289,267.063 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="813.748,278.148 804.005,272.664 809.547,271.934 812.289,267.063 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="870" y1="334" x2="958.823" y2="388.882"/>
+    <polygon style="fill: #000000" points="965.203,392.825 954.068,391.822 958.823,388.882 959.324,383.315 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="965.203,392.825 954.068,391.822 958.823,388.882 959.324,383.315 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="175.105" y1="180" x2="285.485" y2="156.063"/>
+    <polygon style="fill: #000000" points="292.815,154.474 284.102,161.48 285.485,156.063 281.982,151.707 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="292.815,154.474 284.102,161.48 285.485,156.063 281.982,151.707 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="424.926" y1="154.975" x2="482.829" y2="176.594"/>
+    <polygon style="fill: #000000" points="489.855,179.218 478.738,180.404 482.829,176.594 482.236,171.036 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="489.855,179.218 478.738,180.404 482.829,176.594 482.236,171.036 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="175.105" y1="180" x2="430.314" y2="206.013"/>
+    <polygon style="fill: #000000" points="437.775,206.773 427.32,210.733 430.314,206.013 428.334,200.785 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="437.775,206.773 427.32,210.733 430.314,206.013 428.334,200.785 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="1014.21" y1="394" x2="1014.21" y2="434"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="1014.21" y1="394" x2="920" y2="394"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="1014.21" y1="434" x2="920" y2="434"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="964.75" y="419">
+      <tspan x="964.75" y="419">Fedora Users</tspan>
+    </text>
+  </g>
+  <g>
+    <path style="fill: #ffffff" d="M 540 378 C 588.5,364.5 612.75,360 661.25,360 C 709.75,360 734,364.5 782.5,378 L 782.5,450 C 734,463.5 709.75,468 661.25,468 C 612.75,468 588.5,463.5 540,450 L 540,378z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 540 378 C 588.5,364.5 612.75,360 661.25,360 C 709.75,360 734,364.5 782.5,378 L 782.5,450 C 734,463.5 709.75,468 661.25,468 C 612.75,468 588.5,463.5 540,450 L 540,378"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 540 378 C 588.5,391.5 612.75,396 661.25,396 C 709.75,396 734,391.5 782.5,378"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="661.25" y="419">
+      <tspan x="661.25" y="419">Custom Repo Storage</tspan>
+      <tspan x="661.25" y="435">(Pulp)</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="543.9" y1="234" x2="654.614" y2="352.875"/>
+    <polygon style="fill: #000000" points="659.726,358.364 649.252,354.454 654.614,352.875 656.57,347.638 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="659.726,358.364 649.252,354.454 654.614,352.875 656.57,347.638 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="460" y1="414" x2="529.258" y2="414"/>
+    <polygon style="fill: #000000" points="536.758,414 526.758,419 529.258,414 526.758,409 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="536.758,414 526.758,419 529.258,414 526.758,409 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="491.95" y1="234" x2="409.81" y2="378.535"/>
+    <polygon style="fill: #000000" points="406.105,385.056 406.699,373.891 409.81,378.535 415.393,378.832 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="406.105,385.056 406.699,373.891 409.81,378.535 415.393,378.832 "/>
+  </g>
+  <text font-size="27.0929" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="800" y="40">
+    <tspan x="800" y="40">SOFTWARE</tspan>
+    <tspan x="800" y="73.8667">COMPONENT</tspan>
+    <tspan x="800" y="107.733">PIPELINE (INITIAL)</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="783.502" y1="414" x2="910.264" y2="414"/>
+    <polygon style="fill: #000000" points="917.764,414 907.764,419 910.264,414 907.764,409 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="917.764,414 907.764,419 910.264,414 907.764,409 "/>
+  </g>
+  <text font-size="18.0619" style="fill: #000000;text-anchor:end;font-family:sans-serif;font-style:normal;font-weight:normal" x="300" y="516.75">
+    <tspan x="300" y="516.75">RELATED, BUT NOT SHOWN: </tspan>
+  </text>
+  <g>
+    <g>
+      <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="60" y1="40" x2="110.264" y2="40"/>
+      <polygon style="fill: #000000" points="117.764,40 107.764,45 110.264,40 107.764,35 "/>
+      <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="117.764,40 107.764,45 110.264,40 107.764,35 "/>
+    </g>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="140" y="40">
+      <tspan x="140" y="40">Software (source or binary formats)</tspan>
+    </text>
+    <g>
+      <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="60" y1="80" x2="110.264" y2="80"/>
+      <polygon style="fill: #000000" points="117.764,80 107.764,85 110.264,80 107.764,75 "/>
+      <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="117.764,80 107.764,85 110.264,80 107.764,75 "/>
+    </g>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="140" y="80">
+      <tspan x="140" y="80">Notifications/metadata and/or commands only</tspan>
+    </text>
+  </g>
+</svg>
