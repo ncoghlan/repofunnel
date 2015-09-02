@@ -7,13 +7,40 @@ Current focus is on aggregrating independent COPR repos, allowing users to selec
 
 This is pre-pre-alpha software, so the above is a statement of intent, rather than a description of current functionality :)
 
+Local Development
+-----------------
+
+Helper scripts for local development are in `_localdev`.
+
+* `build.sh`: Builds the ncoghlan/repofunnel Docker image locally
+* `start_pulp.sh`: Runs up a local containerised Pulp instance
+* `pulp_admin.sh`: Starts a container to run the pulp-admin client against the
+  local Pulp instance
+* `demo_server.sh`: Runs the ncoghlan/repofunnel image against the local Pulp
+  instance
+* `run_dev.sh`: Runs the ncoghlan/repofunnel image, but runs the RepoFunnel web
+  service itself from the source checkout on the host, rather than the version
+  built into the container
+
+These are just wrappers around particular Docker invocations, read the scripts
+for details (aside from the one to start a local Pulp instance, they're all
+single commands)
+
+SELinux objects to the cross-linking between the Pulp containers, so that
+currently needs to be switched off in order to run up the service locally.
 
 Tech stack
 ----------
 
 This is a Django app, to align with the tech stack used by pulpproject.org
 
-The copr2pulp Django app handles the aspects actually specific to this project.
+REST API design is taken from jsonapi.org, provided via Django REST Framework
 
-`repo_integrator/Dockerfile` shows how to run a devel server as a container,
-or locally in a virtual environment.
+Development relies on Docker containers (for both Pulp and RepoFunnel itself)
+
+The copr2pulp Django app handles the aspects specific to retrieving repo details
+from COPR and mapping them to local repos stored in Pulp (making both remote
+data sources and local data stores pluggable is a desirable future enhancement,
+but not a near term priority)
+
+Front end styling relies on patternfly.org

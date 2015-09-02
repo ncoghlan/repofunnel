@@ -1,4 +1,5 @@
 django==1.8.4
 djangorestframework
+djangorestframework-jsonapi
 requests
 
