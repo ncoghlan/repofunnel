@@ -21,7 +21,7 @@ else
 fi
 
 # We create a data container to hold all of Pulp's working directories
-MOUNTS="--volumes-from pulp_data -v /dev/log:/dev/log:Z"
+MOUNTS="--volumes-from pulp_data -v /dev/log:/dev/log"
 if docker start pulp_data 2> /dev/null
 then
     echo Shared volumes for Pulp already created
@@ -40,8 +40,14 @@ else
            pulp/base bash -c /setup.sh
 fi
 
-PULPAPI_LOG=$(sudo docker inspect pulp_data | python3 -c 'import json, sys; data = [vol["Source"] for vol in json.loads(sys.stdin.read())[0]["Mounts"] if vol["Destination"] == "/var/log/httpd-pulpapi"];print(data[0])')
-CRANE_LOG=$(sudo docker inspect pulp_data | python3 -c 'import json, sys; data = [vol["Source"] for vol in json.loads(sys.stdin.read())[0]["Mounts"] if vol["Destination"] == "/var/log/httpd-crane"];print(data[0])')
+#TODO: Move these to a proper helper script...
+PULP_DATA_VOLUMES=$(docker inspect pulp_data | python3 -c 'import json, sys; data = [vol["Source"] for vol in json.loads(sys.stdin.read())[0]["Mounts"]];print(" ".join(data))')
+for vol in $PULP_DATA_VOLUMES; do
+    echo Setting context on $vol
+    chcon -Rt svirt_sandbox_file_t $vol
+done
+PULPAPI_LOG=$(docker inspect pulp_data | python3 -c 'import json, sys; data = [vol["Source"] for vol in json.loads(sys.stdin.read())[0]["Mounts"] if vol["Destination"] == "/var/log/httpd-pulpapi"];print(data[0])')
+CRANE_LOG=$(docker inspect pulp_data | python3 -c 'import json, sys; data = [vol["Source"] for vol in json.loads(sys.stdin.read())[0]["Mounts"] if vol["Destination"] == "/var/log/httpd-crane"];print(data[0])')
 
 if docker start pulp_beat 2> /dev/null
 then
