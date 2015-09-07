@@ -41,7 +41,7 @@ else
 fi
 
 #TODO: Move these to a proper helper script...
-PULP_DATA_VOLUMES=$(docker inspect pulp_data | python3 -c 'import json, sys; data = [vol["Source"] for vol in json.loads(sys.stdin.read())[0]["Mounts"]];print(" ".join(data))')
+PULP_DATA_VOLUMES=$(docker inspect pulp_data | python3 -c 'import json, sys, os.path; data = [os.path.dirname(vol["Source"]) for vol in json.loads(sys.stdin.read())[0]["Mounts"]];print(" ".join(data))')
 for vol in $PULP_DATA_VOLUMES; do
     echo Setting context on $vol
     chcon -Rt svirt_sandbox_file_t $vol
