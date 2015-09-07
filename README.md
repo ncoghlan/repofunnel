@@ -22,6 +22,16 @@ Helper scripts for local development are in `_localdev`.
   service itself from the source checkout on the host, rather than the version
   built into the container
 
+To run an unmodified demo instance::
+
+    sudo _localdev/start_pulp.sh
+    sudo _localdev/demo_server.sh
+
+To run a development instance::
+
+    sudo _localdev/start_pulp.sh
+    sudo _localdev/run_dev.sh $(pwd)/..
+
 These are just wrappers around particular Docker invocations, read the scripts
 for details (aside from the one to start a local Pulp instance, they're all
 single commands)
