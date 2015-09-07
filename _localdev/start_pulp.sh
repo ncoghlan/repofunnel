@@ -40,12 +40,6 @@ else
            pulp/base bash -c /setup.sh
 fi
 
-#TODO: Move these to a proper helper script...
-PULP_DATA_VOLUMES=$(docker inspect pulp_data | python3 -c 'import json, sys, os.path; data = [os.path.dirname(vol["Source"]) for vol in json.loads(sys.stdin.read())[0]["Mounts"]];print(" ".join(data))')
-for vol in $PULP_DATA_VOLUMES; do
-    echo Setting context on $vol
-    chcon -Rt svirt_sandbox_file_t $vol
-done
 PULPAPI_LOG=$(docker inspect pulp_data | python3 -c 'import json, sys; data = [vol["Source"] for vol in json.loads(sys.stdin.read())[0]["Mounts"] if vol["Destination"] == "/var/log/httpd-pulpapi"];print(data[0])')
 CRANE_LOG=$(docker inspect pulp_data | python3 -c 'import json, sys; data = [vol["Source"] for vol in json.loads(sys.stdin.read())[0]["Mounts"] if vol["Destination"] == "/var/log/httpd-crane"];print(data[0])')
 
@@ -95,7 +89,7 @@ else
     echo running crane
     docker run $MOUNTS -v $CRANE_LOG:/var/log/httpd:Z -d \
            --name crane -p 5000:80 \
-           pulp/crane-allinone bash -c 'chown apache /var/lib/pulp && /usr/sbin/httpd -D FOREGROUND'
+           pulp/crane-allinone
 fi
 
 #docker run $MOUNTS -v $PULPAPI_LOG:/var/log/httpd:Z $LINKS -d pulp/apache bash
