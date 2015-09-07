@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from copr2pulp import views
+import copr2pulp.views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.home, name='home'),
+    url(r'^$', copr2pulp.views.repo_overview, name='home'),
 ]
