@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 import copr2pulp.views
+import copr2pulp.restapi
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^api/', include(copr2pulp.restapi.make_urls())),
     url(r'^$', copr2pulp.views.repo_overview, name='home'),
 ]
