@@ -6,12 +6,19 @@ import requests
 pulp_url = "https://pulpapi/pulp"
 pulp_api_path = "/api/v2/repositories/"
 
-def get_repos():
+def _convert_repo(repo):
+    return {"repo_id":repo["id"],
+            "display_name":repo["display_name"],
+            "details": repo,
+            }
+
+def iter_repos():
     pulp_info = requests.get(pulp_url + pulp_api_path,
                              auth=('admin', 'admin'),
                              verify=False)
     if pulp_info.text == "not found":
-        repos = []
+        raw_repos = []
     else:
-        repos = pulp_info.json()
-    return repos
+        raw_repos = pulp_info.json()
+    for repo in raw_repos:
+        yield _convert_repo(repo)

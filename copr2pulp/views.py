@@ -9,7 +9,7 @@ def repo_overview(request):
     sources = coprapi.get_repos()
     copr_api_url = reverse("copr_repo-list")
     # Get local repo info from Pulp
-    targets = pulpapi.get_repos()
+    targets = list(pulpapi.iter_repos())
     # Display them both
     context = {"remote_repos": sources,
                "remote_repo_url": copr_api_url,
