@@ -55,9 +55,38 @@
         $('#remote_repos_rest').dataTable( {
             ajax: "{{ remote_repo_url|safe }}",
             columns: [
-                { title: "Repository", data: "attributes.name" },
+                { title: "Repository", data: "attributes.name",
+                  render: function ( data, type, row ) {
+                    // For display, format as a hyperlink
+                    if ( type === 'display') {
+                        return '<a href="'+row.attributes.display_url+'">'+data+'</a>'
+                    }
+                    // Otherwise return unmodified
+                    return data;
+                  }
+                },
                 { title: "Description", data: "attributes.description" },
-                { title: "Package Repositories", data: "attributes.yum_repos" }
+                { title: "Package Repositories", data: "attributes.yum_repos",
+                  render: function ( data, type, row ) {
+                    // For display, format as a list of repp hyperlinks
+                    if ( type === 'display') {
+                        // Presumably there's a nicer way to do this...
+                        var output = [];
+                        output.push('<ul>');
+                        $.each(data, function(repo_name, repo_url) {
+                                    output.push('<li><a href="');
+                                    output.push(repo_url);
+                                    output.push('">');
+                                    output.push(repo_name);
+                                    output.push('</a></li>');
+                        });
+                        output.push('</ul>');
+                        return output.join('')
+                    }
+                    // Otherwise return unmodified
+                    return data;
+                  }
+                }
             ]
         } );
         var None = null; // Quick hack pending replacement with a REST call
