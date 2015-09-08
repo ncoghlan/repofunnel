@@ -33,6 +33,10 @@
     {% endif %}
     </tbody>
 </table>
+<h2>Remote COPR repos (via REST API):</h2>
+
+<table id="remote_repos_rest" class="datatable table table-striped table-bordered"></table>
+
 <h2>Local Pulp repos:</h2>
 <table id="local_repos" class="datatable table table-striped table-bordered"></table>
 {% if local_repos %}
@@ -48,6 +52,14 @@
     // Initialize Datatables
     $(document).ready( function() {
         $('#remote_repos').dataTable();
+        $('#remote_repos_rest').dataTable( {
+            ajax: "{{ remote_repo_url|safe }}",
+            columns: [
+                { title: "Repository", data: "attributes.name" },
+                { title: "Description", data: "attributes.description" },
+                { title: "Package Repositories", data: "attributes.yum_repos" }
+            ]
+        } );
         var None = null; // Quick hack pending replacement with a REST call
         var local_repo_data = {{ local_repos|safe }};
         $('#local_repos').DataTable( {
