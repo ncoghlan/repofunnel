@@ -22,3 +22,12 @@ def iter_repos():
         raw_repos = pulp_info.json()
     for repo in raw_repos:
         yield _convert_repo(repo)
+
+def create_repo(repo_id, display_name):
+    details = {"id":repo_id, "display_name":display_name}
+    pulp_reply = requests.post(pulp_url + pulp_api_path,
+                               auth=('admin', 'admin'),
+                               json=details,
+                               verify=False)
+    pulp_reply.raise_for_status()
+    return _convert_repo(pulp_reply.json())

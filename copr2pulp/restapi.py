@@ -14,8 +14,7 @@ class PulpRepoSerializer(serializers.Serializer):
     details = serializers.DictField(read_only=True)
 
     def create(self, validated_data):
-        repo = dict(validated_data)
-        repo["details"] = {}
+        repo = pulpapi.create_repo(**validated_data)
         return repo
 
 class PulpRepoViewSet(viewsets.ViewSet):

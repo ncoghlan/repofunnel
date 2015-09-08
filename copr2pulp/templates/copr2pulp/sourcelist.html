@@ -37,17 +37,8 @@
 
 <table id="remote_repos_rest" class="datatable table table-striped table-bordered"></table>
 
-<h2>Local Pulp repos:</h2>
+<h2>Local Pulp repos (via REST API):</h2>
 <table id="local_repos" class="datatable table table-striped table-bordered"></table>
-{% if local_repos %}
-    <ul>
-    {% for repo in local_repos %}
-        <li>{{ repo }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No local targets are defined.</p>
-{% endif %}
 <script>
     // Initialize Datatables
     $(document).ready( function() {
@@ -89,15 +80,12 @@
                 }
             ]
         } );
-        var None = null; // Quick hack pending replacement with a REST call
-        var local_repo_data = {{ local_repos|safe }};
         $('#local_repos').DataTable( {
-            data: local_repo_data,
+            ajax: "{{ local_repo_url|safe }}",
             columns: [
-                { title: "ID", data: "id" },
-                { title: "Repository", data: "display_name" },
-                { title: "Description", data: "description" },
-                { title: "Notes", data: "notes" }
+                { title: "ID", data: "attributes.repo_id" },
+                { title: "Repository", data: "attributes.display_name" },
+                { title: "Description", data: "attributes.details.description" },
             ]
         } );
     });
