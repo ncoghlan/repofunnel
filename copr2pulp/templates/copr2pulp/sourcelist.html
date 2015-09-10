@@ -50,7 +50,16 @@
         $('#local_repos').DataTable( {
             ajax: "{{ local_repo_url|safe }}",
             columns: [
-                { title: "ID", data: "attributes.repo_id"},
+                { title: "ID", data: "attributes.repo_id",
+                  render: function ( data, type, row ) {
+                    // For display, format as a hyperlink to local REST API
+                    if ( type === 'display') {
+                        return '<a href="'+row.links.self+'">'+data+'</a>'
+                    }
+                    // Otherwise return unmodified
+                    return data;
+                  }
+                },
                 { title: "Repository", data: "attributes.display_name" },
                 { title: "Description", data: "attributes.details.description" },
             ]
