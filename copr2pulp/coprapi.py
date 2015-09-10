@@ -6,7 +6,10 @@ from rest_framework import status
 from rest_framework import viewsets
 import requests
 
+#=====================================
 # Client access to the remote COPR API
+#=====================================
+
 copr_url = "https://copr.fedoraproject.org"
 
 #TODO: Sorting and tagging of COPR repos to control which ones show up in the
@@ -25,7 +28,10 @@ def iter_repos():
         repo["display_url"] = copr_url + copr_display_path + repo["name"]
         yield repo
 
+#=========================================
 # Local REST API proxy for remote COPR API
+#=========================================
+
 COLLECTION_NAME = 'copr_repo'
 def add_to_router(router, prefix):
     router.register(prefix, CoprRepoViewSet, base_name=COLLECTION_NAME)

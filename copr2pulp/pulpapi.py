@@ -10,7 +10,10 @@ import requests
 #TODO: Configurable Pulp connectivity. For now, assume a local container
 # service link called "pulpapi", and don't verify the HTTPS connection
 
+#=====================================
 # Client access to the remote Pulp API
+#=====================================
+
 pulp_url = "https://pulpapi/pulp"
 pulp_api_path = "/api/v2/"
 pulp_api_url = pulp_url + pulp_api_path
@@ -56,7 +59,10 @@ def create_repo(repo_id, display_name):
     pulp_reply = _post_pulp_url("repositories", json=details)
     return _convert_repo(pulp_reply.json())
 
+#=========================================
 # Local REST API proxy for remote Pulp API
+#=========================================
+
 COLLECTION_NAME = 'pulp_repo'
 def add_to_router(router, prefix):
     router.register(prefix, PulpRepoViewSet, base_name=COLLECTION_NAME)
