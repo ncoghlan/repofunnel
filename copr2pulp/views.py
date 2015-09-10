@@ -5,9 +5,8 @@ from . import pulpapi
 
 # Summary of local and remote repos
 def repo_overview(request):
-    # Get remote repo info from COPR
-    sources = coprapi.get_repos()
-    context = {"remote_repos": sources,
-               "remote_repo_url": reverse("copr_repo-list"),
+    # Only remote repo source currently supported is COPR
+    # Only local repo store currently supported is Pulp
+    context = {"remote_repo_url": reverse("copr_repo-list"),
                "local_repo_url": reverse("pulp_repo-list")}
     return render(request, 'copr2pulp/sourcelist.html', context=context)
