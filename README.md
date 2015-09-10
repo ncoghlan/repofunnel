@@ -3,9 +3,28 @@ RepoFunnel
 
 Uses Pulp to integrate disparate RPM repos into a single unified source.
 
-Current focus is on aggregrating independent COPR repos, allowing users to select their enabled COPR repos online through the repo integrator service, and have just a single remote repo to configure on their client systems, rather than having a proliferation of individual COPR repos enabled.
+Current focus is on aggregrating independent COPR repos, allowing users to
+select their enabled COPR repos online through the repo integrator service, and
+have just a single remote repo to configure on their client systems, rather
+than having a proliferation of individual COPR repos enabled.
 
-This is pre-pre-alpha software, so the above is a statement of intent, rather than a description of current functionality :)
+This is pre-pre-alpha software, so the above is a statement of intent, rather
+than a description of current functionality :)
+
+Future Design Goals
+-------------------
+
+While the specific focus of v1.0 development is a funnel from COPR RPM repos to
+Pulp RPM repos, there are two main axes of future generalisation to be
+considered:
+
+* more upstream sources (e.g. pypi.python.org, npm.org)
+* alternate downstream targets (e.g. Pinterest's pinrepo)
+
+This is deliberately similar to the arc of Pulp's development, which focused
+specifically on RPM for the v1.0 release while keeping future support for
+multiple content types in mind, and than on actually supporting plugins to the
+repo management system for the v2.0 release.
 
 Local Development
 -----------------
