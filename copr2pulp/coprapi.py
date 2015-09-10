@@ -22,7 +22,7 @@ def iter_repos():
     # Get remote repo info from COPR
     copr_reply = requests.get(copr_url + copr_api_path)
     copr_reply.raise_for_status()
-    raw_repos = copr_reply.json()["repos"]
+    repos = copr_reply.json()["repos"]
     for repo in repos:
         # COPR API doesn't currently report repo's display URLs
         repo["display_url"] = copr_url + copr_display_path + repo["name"]
