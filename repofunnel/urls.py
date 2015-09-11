@@ -21,5 +21,6 @@ import copr2pulp.restapi
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(copr2pulp.restapi.make_urls())),
+    url(r'^funnel$', copr2pulp.views.funnel_app, name='funnel_app'),
     url(r'^$', copr2pulp.views.repo_overview, name='home'),
 ]
