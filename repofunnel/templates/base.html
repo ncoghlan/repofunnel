@@ -79,11 +79,13 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-primary">
-          <li class="active">
-            <a href="#" class="active">Home</a>
+          {% url 'home' as home_url %}
+          <li{% if request.path == home_url %} class="active"{% endif %}>
+            <a href="{{ home_url }}">Home</a>
           </li>
-          <li>
-            <a href="{% url "funnel_app" %}">Funnels</a>
+          {% url 'funnel_app' as funnel_url %}
+          <li{% if request.path == funnel_url %} class="active"{% endif %}>
+            <a href="{{ funnel_url }}">Funnels</a>
           </li>
           <li>
             <a href="/api">REST API</a>

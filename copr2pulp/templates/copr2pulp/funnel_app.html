@@ -8,10 +8,11 @@
 <script>
     // Initialize Datatables
     $(document).ready( function() {
-        $('#local_repos').DataTable( {
+        $('#funnels').DataTable( {
             ajax: "{% url 'funnel-list' %}",
             columns: [
-                { title: "ID", data: "attributes.id",
+                { title: "ID", data: "id" },
+                { title: "Name", data: "attributes.name",
                   render: function ( data, type, row ) {
                     // For display, format as a hyperlink to local REST API
                     if ( type === 'display') {
@@ -21,7 +22,6 @@
                     return data;
                   }
                 },
-                { title: "Name", data: "attributes.name" },
             ]
         } );
     });
