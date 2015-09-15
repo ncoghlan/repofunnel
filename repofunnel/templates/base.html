@@ -83,9 +83,9 @@
           <li{% if request.path == home_url %} class="active"{% endif %}>
             <a href="{{ home_url }}">Home</a>
           </li>
-          {% url 'funnel_app' as funnel_url %}
-          <li{% if request.path == funnel_url %} class="active"{% endif %}>
-            <a href="{{ funnel_url }}">Funnels</a>
+          {% url 'repo_overview' as overview_url %}
+          <li{% if request.path == overview_url %} class="active"{% endif %}>
+            <a href="{{ overview_url }}">Repositories</a>
           </li>
           <li>
             <a href="/api">REST API</a>
