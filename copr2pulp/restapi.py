@@ -40,7 +40,7 @@ class FunnelSerializer(serializers.HyperlinkedModelSerializer):
         funnel.save()
         # TODO: Hook up demo feed repos
         # https://copr-be.cloud.fedoraproject.org/results/whot/libevdev/epel-7-x86_64/
-        # https://copr-be.cloud.fedoraproject.org/results/whot/epel-7-x86_64/
+        # https://copr-be.cloud.fedoraproject.org/results/whot/libinput-epel7/epel-7-x86_64/
         return funnel
 
 #==========

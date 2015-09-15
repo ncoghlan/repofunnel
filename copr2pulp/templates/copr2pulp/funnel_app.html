@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Defined funnels (via REST API):</h2>
+<h2>Funnels:</h2>
 
 <table id="funnels" class="datatable table table-striped table-bordered"></table>
+
+<h2>Feeds:</h2>
+
+<table id="feeds" class="datatable table table-striped table-bordered"></table>
 
 <script>
     // Initialize Datatables
@@ -17,6 +21,32 @@
                     // For display, format as a hyperlink to local REST API
                     if ( type === 'display') {
                         return '<a href="'+row.links.self+'">'+data+'</a>'
+                    }
+                    // Otherwise return unmodified
+                    return data;
+                  }
+                },
+            ]
+        } );
+        $('#feeds').DataTable( {
+            ajax: "{% url 'feed-list' %}",
+            columns: [
+                { title: "ID", data: "id" },
+                { title: "Name", data: "attributes.name",
+                  render: function ( data, type, row ) {
+                    // For display, format as a hyperlink to local REST API
+                    if ( type === 'display') {
+                        return '<a href="'+row.links.self+'">'+data+'</a>'
+                    }
+                    // Otherwise return unmodified
+                    return data;
+                  }
+                },
+                { title: "Feed URL", data: "attributes.feed_url",
+                  render: function ( data, type, row ) {
+                    // For display, format as a hyperlink direct to source
+                    if ( type === 'display') {
+                        return '<a href="'+data+'">'+data+'</a>'
                     }
                     // Otherwise return unmodified
                     return data;
