@@ -39,8 +39,8 @@ class FunnelSerializer(serializers.HyperlinkedModelSerializer):
         pulp_repo = pulpapi.create_repo(repo_name, repo_name)
         funnel.save()
         # TODO: Hook up demo feed repos
-        # https://copr-be.cloud.fedoraproject.org/results/whot/libevdev/epel-7-x86_64/
-        # https://copr-be.cloud.fedoraproject.org/results/whot/libinput-epel7/epel-7-x86_64/
+        # copr-whot-libevdev: https://copr-be.cloud.fedoraproject.org/results/whot/libevdev/epel-7-x86_64/
+        # copr-whot-libinput: https://copr-be.cloud.fedoraproject.org/results/whot/libinput-epel7/epel-7-x86_64/
         return funnel
 
 #==========
