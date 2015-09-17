@@ -16,7 +16,7 @@ class FeedSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Feed
-        fields = ("id", "name", "feed_url")
+        fields = ("id", "name", "url", "feed_url")
 
     def create(self, validated_data):
         feed_repo = models.Feed.objects.create(**validated_data)
