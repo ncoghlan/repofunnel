@@ -16,31 +16,34 @@ class FeedSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Feed
-        read_only_fields = ('funnel_set',)
+        fields = ("id", "name", "feed_url")
 
     def create(self, validated_data):
         feed_repo = models.Feed.objects.create(**validated_data)
         repo_name = "feed-" + validated_data["name"]
         pulp_repo = pulpapi.create_repo(repo_name, repo_name)
         #TODO: Actually configure the repo feed
+        #TODO: Store the pulp repo URL on the Feed instance
         feed_repo.save()
         return feed_repo
 
 class FunnelSerializer(serializers.HyperlinkedModelSerializer):
-    #TODO: Report the source feed URLs merged by the funnel
+    feeds = FeedSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.Funnel
-        read_only_fields = ('feeds',)
 
     def create(self, validated_data):
         funnel = models.Funnel.objects.create(**validated_data)
         repo_name = "funnel-" + validated_data["name"]
         pulp_repo = pulpapi.create_repo(repo_name, repo_name)
+        #TODO: Store the pulp repo URL on the Funnel instance
         funnel.save()
-        # TODO: Hook up demo feed repos
-        # copr-whot-libevdev: https://copr-be.cloud.fedoraproject.org/results/whot/libevdev/epel-7-x86_64/
-        # copr-whot-libinput: https://copr-be.cloud.fedoraproject.org/results/whot/libinput-epel7/epel-7-x86_64/
+        #TODO: Specify which feeds to link. For now, always link all of them
+        funnel.feeds = models.Feed.objects.all()
+        #TODO: Configure content sync from the feed repo to the merge repo
+        #TODO: Configure event listeners for feed repo updates
+        funnel.save()
         return funnel
 
 #==========
