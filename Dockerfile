@@ -16,16 +16,18 @@ RUN dnf -y install dnf-plugins-core && \
     dnf clean all
 
 # Add the app sources
-ADD . /srv/repofunnel/repofunnel
+ADD . /srv/repofunnel
 
-# Create the virtual env, activate it, install deps and run migration
+# Create the virtual env, activate it, install deps and ensure migrations exist
 WORKDIR /srv
-RUN pyvenv "repofunnel" && \
+RUN pyvenv repofunnel && \
     cd repofunnel && \
     source bin/activate && \
-    pip3 install -r "repofunnel/requirements.txt" && \
-    repofunnel/manage.py migrate
+    pip3 install -r requirements.txt && \
+    ./manage.py makemigrations
 
+# Always run migrations before starting server
 EXPOSE 8000
 CMD source /srv/repofunnel/bin/activate && \
-    /srv/repofunnel/repofunnel/manage.py runserver 0.0.0.0:8000
+    /srv/repofunnel/manage.py migrate && \
+    /srv/repofunnel/manage.py runserver 0.0.0.0:8000

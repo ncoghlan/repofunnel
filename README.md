@@ -75,11 +75,17 @@ To run an unmodified demo instance::
     sudo _localdev/start_pulp.sh
     sudo _localdev/demo_server.sh
 
-To run a development instance::
+To run a development instance (for the first time)::
 
     sudo setenforce 0             # Sorry Dan...
     sudo _localdev/start_pulp.sh
-    sudo _localdev/run_dev.sh $(pwd)/..
+    sudo _localdev/run_dev.sh .
+
+To restart a stopped development instance::
+
+    sudo setenforce 0             # Sorry Dan...
+    sudo _localdev/start_pulp.sh  # This will restart existing containers
+    sudo docker -ai start repofunnel_dev
 
 These are just wrappers around particular Docker invocations, read the scripts
 for details (aside from the one to start a local Pulp instance, they're all
@@ -87,6 +93,9 @@ single commands)
 
 SELinux objects to the cross-linking between the Pulp containers, so that
 currently needs to be switched off in order to run up the service locally.
+Pulp's architecture is sufficiently complex that fixing this will likely
+require switching to Kubernetes for local development rather than using plain
+Docker.
 
 Tech stack
 ----------
