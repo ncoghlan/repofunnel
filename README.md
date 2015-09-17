@@ -97,18 +97,28 @@ Pulp's architecture is sufficiently complex that fixing this will likely
 require switching to Kubernetes for local development rather than using plain
 Docker.
 
+The development instance (`run_dev.sh`) stores persistent data in three places:
+
+* the pulp_db MongoDB container (Pulp's main data store)
+* the pulp_data container (Pulp's generated RPM repos)
+* the host working directory (the SQLite DB for the dev instance)
+
+This allows the development instance container to be destroyed and recreated at
+will without losing any working data.
+
+By contrast, the demo instance (`demo_server.sh`) stores its data inside the
+container, so destroying and recreating it will lose any previously entered
+data.
+
 Tech stack
 ----------
 
 This is a Django app, to align with the tech stack used by pulpproject.org
 
-REST API design is taken from jsonapi.org, provided via Django REST Framework
+Pulp is used as the repository management and content management engine.
+
+REST API design is from jsonapi.org, implemented via Django REST Framework
+
+Front end styling is from patternfly.org
 
 Development relies on Docker containers (for both Pulp and RepoFunnel itself)
-
-The copr2pulp Django app handles the aspects specific to retrieving repo details
-from COPR and mapping them to local repos stored in Pulp (making both remote
-data sources and local data stores pluggable is a desirable future enhancement,
-but not a near term priority)
-
-Front end styling relies on patternfly.org
