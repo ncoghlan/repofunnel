@@ -34,6 +34,7 @@ class FunnelSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Funnel
+        fields = ("id", "name", "url", "feeds")
 
     def create(self, validated_data):
         funnel = models.Funnel.objects.create(**validated_data)
