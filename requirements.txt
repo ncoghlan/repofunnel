@@ -1,5 +1,6 @@
 django==1.8.4
 django_extensions
+django-debug-toolbar
 djangorestframework
 djangorestframework-jsonapi
 requests

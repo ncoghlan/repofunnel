@@ -25,6 +25,10 @@ SECRET_KEY = 'hx0d0sbwn&gsp)pg80%ksnn(%n@mmdc9+h7)_+a9phrxesjv8h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Django debug toolbar docker compatibility
+if "DOCKER_HOST" in os.environ:
+    INTERNAL_IPS = [os.environ["DOCKER_HOST"]]
+
 ALLOWED_HOSTS = []
 
 
@@ -37,6 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'django_extensions',
     'rest_framework',
     'copr2pulp',
