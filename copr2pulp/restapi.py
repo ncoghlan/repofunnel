@@ -13,6 +13,7 @@ from . import models
 #=============
 
 class FeedSerializer(serializers.HyperlinkedModelSerializer):
+    #TODO: Delete the Pulp repo when deleting the tracking feed
 
     class Meta:
         model = models.Feed
@@ -28,6 +29,7 @@ class FeedSerializer(serializers.HyperlinkedModelSerializer):
         return feed_repo
 
 class FunnelSerializer(serializers.HyperlinkedModelSerializer):
+    #TODO: Delete the Pulp repo when deleting the merge funnel
     feeds = FeedSerializer(many=True, read_only=True)
 
     class Meta:
