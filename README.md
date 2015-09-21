@@ -53,6 +53,12 @@ Local Development
 
 Source repo: https://github.com/ncoghlan/repofunnel
 
+Running services:
+
+* RPM repos: http://localhost/pulp/repos
+* RepoFunnel UI: http://localhost:8000
+* RepoFunnel API: http://localhost:8000/api
+
 Helper scripts for local development are in `_localdev`.
 
 * `build.sh`: Builds the ncoghlan/repofunnel Docker image locally
