@@ -70,10 +70,10 @@ def delete_repo(repo_id):
             return {"error": None, "result": None, "spawned_tasks": []}
         raise
 
-def set_feed(repo_id, feed_url):
-    config = {"importer_type_id": "yum_importer",
-              "importer_config": {"feed": feed_url}
-             }
+def set_feed(repo_id, feed_url=None):
+    config = {"importer_type_id": "yum_importer"}
+    if feed_url is not None:
+        config["importer_config"] = {"feed": feed_url}
     pulp_reply = _post_pulp_url("repositories", repo_id, "importers",
                                 json=config)
     return pulp_reply.json()
@@ -90,6 +90,24 @@ def start_merge(source_repo_id, target_repo_id):
     config = {"source_repo_id": source_repo_id}
     pulp_reply = _post_pulp_url("repositories", target_repo_id,
                                 "actions/associate", json=config)
+    return pulp_reply.json()
+
+def set_target(repo_id):
+    config = {
+        "distributor_type_id": "yum_distributor",
+        "distributor_config": {
+            "http": True,
+            "https": False, # No default SSL certs set up
+            "relative_url": repo_id,
+        },
+        "auto_publish": True
+    }
+    pulp_reply = _post_pulp_url("repositories", repo_id, "distributors",
+                                json=config)
+    return pulp_reply.json()
+
+def get_targets(repo_id):
+    pulp_reply = _get_pulp_url("repositories", repo_id, "distributors")
     return pulp_reply.json()
 
 

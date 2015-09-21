@@ -55,6 +55,9 @@ class FunnelSerializer(serializers.HyperlinkedModelSerializer):
         funnel = models.Funnel.objects.create(**validated_data)
         repo_name = self._pulp_prefix + validated_data["name"]
         pulp_repo = pulpapi.create_repo(repo_name, repo_name)
+        add_importer = pulpapi.set_feed(repo_name)
+        pulpapi.wait_for_task(add_importer["spawned_tasks"][0]["task_id"])
+        pulp_importer = pulpapi.get_feed(repo_name)
         funnel.pulp_repo = repo_name
         funnel.save()
         #TODO: Specify which feeds to link. For now, always link all of them
@@ -70,6 +73,7 @@ class FunnelSerializer(serializers.HyperlinkedModelSerializer):
         self.fields["_debug_info"] = serializers.DictField(read_only=True)
         funnel._debug_info = {
             "pulp_repo_creation": pulp_repo,
+            "pulp_importer": pulp_importer,
             "pulp_initial_merges": pulp_merges
         }
         return funnel
