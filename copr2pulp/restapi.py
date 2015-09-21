@@ -59,10 +59,11 @@ class FunnelSerializer(serializers.HyperlinkedModelSerializer):
         funnel.save()
         #TODO: Specify which feeds to link. For now, always link all of them
         funnel.feeds = models.Feed.objects.all()
-        pulp_merges = []
+        pulp_merges = {}
         for feed in funnel.feeds.all():
             #TODO: Support filtering merged content
-            pulp_merges.append(pulpapi.start_merge(feed.pulp_repo, repo_name))
+            source_id = feed.pulp_repo
+            pulp_merges[source_id] = pulpapi.start_merge(source_id, repo_name)
             #TODO: Configure event listeners for feed repo updates
         funnel.save()
         # Show the Pulp details in the creation response
