@@ -11,4 +11,5 @@ class Feed(models.Model):
 class Funnel(models.Model):
     # TODO: Notions of funnel ownership and ACLs
     name = models.CharField(max_length=30)
+    pulp_repo = models.CharField(max_length=40, null=True)
     feeds = models.ManyToManyField(Feed)

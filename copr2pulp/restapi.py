@@ -89,8 +89,9 @@ class FeedViewSet(_DestroyPulpRepoMixin, viewsets.ModelViewSet):
     queryset = _model_manager.all()
     serializer_class = FeedSerializer
 
-class FunnelViewSet(viewsets.ModelViewSet):
-    queryset = models.Funnel.objects.all()
+class FunnelViewSet(_DestroyPulpRepoMixin, viewsets.ModelViewSet):
+    _model_manager = models.Funnel.objects
+    queryset = _model_manager.all()
     serializer_class = FunnelSerializer
 
 #=========================
