@@ -35,6 +35,9 @@ def _get_pulp_url(*api_segments, **request_kwds):
 def _post_pulp_url(*api_segments, **request_kwds):
     return _access_pulp_url(requests.post, *api_segments, **request_kwds)
 
+def _delete_pulp_url(*api_segments, **request_kwds):
+    return _access_pulp_url(requests.delete, *api_segments, **request_kwds)
+
 def _convert_repo(repo):
     repo_id = repo["id"]
     return {"repo_id": repo_id,
@@ -58,6 +61,14 @@ def create_repo(repo_id, display_name):
     details = {"id":repo_id, "display_name":display_name}
     pulp_reply = _post_pulp_url("repositories", json=details)
     return _convert_repo(pulp_reply.json())
+
+def delete_repo(repo_id):
+    try:
+        return _delete_pulp_url("repositories", repo_id).json()
+    except requests.HTTPError as e:
+        if e.response.status_code == status.HTTP_404_NOT_FOUND:
+            return {"error": None, "result": None, "spawned_tasks": []}
+        raise
 
 def set_feed(repo_id, feed_url):
     config = {"importer_type_id": "yum_importer",

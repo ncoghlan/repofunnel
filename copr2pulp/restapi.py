@@ -1,3 +1,4 @@
+from rest_framework.response import Response
 from rest_framework import routers
 from rest_framework import serializers
 from rest_framework import viewsets
@@ -15,6 +16,7 @@ from . import models
 class FeedSerializer(serializers.HyperlinkedModelSerializer):
     #TODO: Delete the Pulp repo when deleting the tracking feed
     #TODO: Support recreating the Pulp repo from the RepoFunnel state
+    _pulp_prefix = "feed-"
 
     class Meta:
         model = models.Feed
@@ -22,14 +24,14 @@ class FeedSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         feed_repo = models.Feed.objects.create(**validated_data)
-        repo_name = "feed-" + validated_data["name"]
+        repo_name = self._pulp_prefix + validated_data["name"]
         pulp_repo = pulpapi.create_repo(repo_name, repo_name)
         add_importer = pulpapi.set_feed(repo_name,
                                         validated_data["feed_url"])
         pulpapi.wait_for_task(add_importer["spawned_tasks"][0]["task_id"])
         pulp_importer = pulpapi.get_feed(repo_name)
         pulp_sync = pulpapi.start_sync(repo_name)
-        #TODO: Store the pulp repo URL on the Feed instance
+        feed_repo.pulp_repo = repo_name
         feed_repo.save()
         # Show the Pulp details in the creation response
         self.fields["_debug_info"] = serializers.DictField(read_only=True)
@@ -42,6 +44,7 @@ class FeedSerializer(serializers.HyperlinkedModelSerializer):
 
 class FunnelSerializer(serializers.HyperlinkedModelSerializer):
     #TODO: Delete the Pulp repo when deleting the merge funnel
+    _pulp_prefix = "funnel-"
     feeds = FeedSerializer(many=True, read_only=True)
 
     class Meta:
@@ -50,7 +53,7 @@ class FunnelSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         funnel = models.Funnel.objects.create(**validated_data)
-        repo_name = "funnel-" + validated_data["name"]
+        repo_name = self._pulp_prefix + validated_data["name"]
         pulp_repo = pulpapi.create_repo(repo_name, repo_name)
         #TODO: Store the pulp repo URL on the Funnel instance
         funnel.save()
@@ -65,8 +68,25 @@ class FunnelSerializer(serializers.HyperlinkedModelSerializer):
 # ViewSets
 #==========
 
-class FeedViewSet(viewsets.ModelViewSet):
-    queryset = models.Feed.objects.all()
+class _DestroyPulpRepoMixin:
+    def destroy(self, request, *, pk):
+        instance = self._model_manager.get(pk=pk)
+        repo_name = instance.name
+        pulp_repo_id = instance.pulp_repo
+        if pulp_repo_id is None:
+            pulp_repo_id = self.serializer_class._pulp_prefix + repo_name
+        pulp_delete = pulpapi.delete_repo(pulp_repo_id)
+        super().destroy(request, pk=pk)
+        details = {
+            "id": pk,
+            "name": repo_name,
+            "_debug_info": {"pulp_repo_deletion": pulp_delete}
+        }
+        return Response(details)
+
+class FeedViewSet(_DestroyPulpRepoMixin, viewsets.ModelViewSet):
+    _model_manager = models.Feed.objects
+    queryset = _model_manager.all()
     serializer_class = FeedSerializer
 
 class FunnelViewSet(viewsets.ModelViewSet):
