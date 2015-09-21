@@ -14,6 +14,7 @@ from . import models
 
 class FeedSerializer(serializers.HyperlinkedModelSerializer):
     #TODO: Delete the Pulp repo when deleting the tracking feed
+    #TODO: Support recreating the Pulp repo from the RepoFunnel state
 
     class Meta:
         model = models.Feed
@@ -23,9 +24,20 @@ class FeedSerializer(serializers.HyperlinkedModelSerializer):
         feed_repo = models.Feed.objects.create(**validated_data)
         repo_name = "feed-" + validated_data["name"]
         pulp_repo = pulpapi.create_repo(repo_name, repo_name)
-        #TODO: Actually configure the repo feed
+        add_importer = pulpapi.set_feed(repo_name,
+                                        validated_data["feed_url"])
+        pulpapi.wait_for_task(add_importer["spawned_tasks"][0]["task_id"])
+        pulp_importer = pulpapi.get_feed(repo_name)
+        pulp_sync = pulpapi.start_sync(repo_name)
         #TODO: Store the pulp repo URL on the Feed instance
         feed_repo.save()
+        # Show the Pulp details in the creation response
+        self.fields["_debug_info"] = serializers.DictField(read_only=True)
+        feed_repo._debug_info = {
+            "pulp_repo_creation": pulp_repo,
+            "pulp_importer": pulp_importer,
+            "pulp_initial_sync": pulp_sync
+        }
         return feed_repo
 
 class FunnelSerializer(serializers.HyperlinkedModelSerializer):

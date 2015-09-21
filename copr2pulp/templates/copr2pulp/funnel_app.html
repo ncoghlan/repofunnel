@@ -10,25 +10,11 @@
 <table id="feeds" class="datatable table table-striped table-bordered"></table>
 
 <script>
-    // Initialize Datatables
+    // TODO: Switch this all over to Angular JS
+
     $(document).ready( function() {
-        $('#funnels').DataTable( {
-            ajax: "{% url 'funnel-list' %}",
-            columns: [
-                { title: "ID", data: "id" },
-                { title: "Name", data: "attributes.name",
-                  render: function ( data, type, row ) {
-                    // For display, format as a hyperlink to local REST API
-                    if ( type === 'display') {
-                        return '<a href="'+row.links.self+'">'+data+'</a>'
-                    }
-                    // Otherwise return unmodified
-                    return data;
-                  }
-                },
-            ]
-        } );
-        $('#feeds').DataTable( {
+        // Initialize Feed table
+        var feed_table = $('#feeds').DataTable( {
             ajax: "{% url 'feed-list' %}",
             columns: [
                 { title: "ID", data: "id" },
@@ -50,6 +36,55 @@
                     }
                     // Otherwise return unmodified
                     return data;
+                  }
+                },
+            ]
+        } );
+        // Initialize Funnel table
+        function get_feed_URL(feed_id) {
+            var feed_data = feed_table.data()
+            var feed_details = null;
+            $.each(feed_data,
+                function(idx, obj) {
+                    feed_details = obj;
+                    return !(obj.type === "feeds" && obj.id === feed_id);
+                }
+            );
+            return feed_details.attributes.feed_url;
+        };
+        $('#funnels').DataTable( {
+            ajax: "{% url 'funnel-list' %}",
+            columns: [
+                { title: "ID", data: "id" },
+                { title: "Name", data: "attributes.name",
+                  render: function ( data, type, row ) {
+                    // For display, format as a hyperlink to local REST API
+                    if ( type === 'display') {
+                        return '<a href="'+row.links.self+'">'+data+'</a>'
+                    }
+                    // Otherwise return unmodified
+                    return data;
+                  }
+                },
+                { title: "Feeds", data: "relationships.feeds.data",
+                  render: function ( cell_data, type, row_data ) {
+                    // For display, format as a list of repo hyperlinks
+                    if ( type === 'display') {
+                        // Presumably there's a nicer way to do this...
+                        var output = [];
+                        output.push('<ul>');
+                        $.each(cell_data,
+                            function(idx, feed_ref) {
+                                output.push('<li>');
+                                output.push(get_feed_URL(feed_ref.id));
+                                output.push('</li>');
+                            }
+                        );
+                        output.push('</ul>');
+                        return output.join('')
+                    }
+                    // Otherwise return unmodified
+                    return cell_data;
                   }
                 },
             ]

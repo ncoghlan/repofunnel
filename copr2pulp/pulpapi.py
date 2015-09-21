@@ -59,6 +59,37 @@ def create_repo(repo_id, display_name):
     pulp_reply = _post_pulp_url("repositories", json=details)
     return _convert_repo(pulp_reply.json())
 
+def set_feed(repo_id, feed_url):
+    config = {"importer_type_id": "yum_importer",
+              "importer_config": {"feed": feed_url}
+             }
+    pulp_reply = _post_pulp_url("repositories", repo_id, "importers",
+                                json=config)
+    return pulp_reply.json()
+
+def get_feed(repo_id):
+    pulp_reply = _get_pulp_url("repositories", repo_id, "importers")
+    return pulp_reply.json()[0]
+
+def start_sync(repo_id):
+    pulp_reply = _post_pulp_url("repositories", repo_id, "actions/sync")
+    return pulp_reply.json()
+
+# TODO: Pass through properly structured error information
+class RemotePulpError(Exception): pass
+
+# TODO: Switch from requests to aiohttp and make this non-blocking
+def wait_for_task(task_id):
+    while True:
+        pulp_reply = _get_pulp_url("tasks", task_id)
+        reply_data = pulp_reply.json()
+        status = reply_data["state"]
+        if status == "finished":
+            break
+        if status not in ("waiting", "running", "suspended"):
+            raise RemotePulpError(str(reply_data))
+    return reply_data
+
 #=========================================
 # Local REST API proxy for remote Pulp API
 #=========================================
