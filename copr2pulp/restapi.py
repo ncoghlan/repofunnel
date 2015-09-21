@@ -25,12 +25,16 @@ class FeedSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         feed_repo = models.Feed.objects.create(**validated_data)
         repo_name = self._pulp_prefix + validated_data["name"]
+        # Create a new feed repository in Pulp
         pulp_repo = pulpapi.create_repo(repo_name, repo_name)
+        # Configure the remote content feed
         add_importer = pulpapi.set_feed(repo_name,
                                         validated_data["feed_url"])
         pulpapi.wait_for_task(add_importer["spawned_tasks"][0]["task_id"])
         pulp_importer = pulpapi.get_feed(repo_name)
+        # Start the initial content sync
         pulp_sync = pulpapi.start_sync(repo_name)
+        # Save the new tracking feed to the database
         feed_repo.pulp_repo = repo_name
         feed_repo.save()
         # Show the Pulp details in the creation response
@@ -54,27 +58,36 @@ class FunnelSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         funnel = models.Funnel.objects.create(**validated_data)
         repo_name = self._pulp_prefix + validated_data["name"]
+        # Create a new funnel RPM repository in Pulp
         pulp_repo = pulpapi.create_repo(repo_name, repo_name)
         add_importer = pulpapi.set_feed(repo_name)
         pulpapi.wait_for_task(add_importer["spawned_tasks"][0]["task_id"])
         pulp_importer = pulpapi.get_feed(repo_name)
-        funnel.pulp_repo = repo_name
-        funnel.save()
+        # Configure the funnel for publishing
+        pulp_distributor = pulpapi.set_target(repo_name)
+        # Merge content into the funnel from the feed repositories
         #TODO: Specify which feeds to link. For now, always link all of them
-        funnel.feeds = models.Feed.objects.all()
+        feeds = models.Feed.objects.all()
         pulp_merges = {}
-        for feed in funnel.feeds.all():
+        for feed in feeds.all():
             #TODO: Support filtering merged content
             source_id = feed.pulp_repo
             pulp_merges[source_id] = pulpapi.start_merge(source_id, repo_name)
             #TODO: Configure event listeners for feed repo updates
+        # Start the initial repo publication
+        pulp_publish = pulpapi.start_publish(repo_name)
+        # Save the new merge funnel to the database
+        funnel.feeds = feeds
+        funnel.pulp_repo = repo_name
         funnel.save()
         # Show the Pulp details in the creation response
         self.fields["_debug_info"] = serializers.DictField(read_only=True)
         funnel._debug_info = {
             "pulp_repo_creation": pulp_repo,
             "pulp_importer": pulp_importer,
-            "pulp_initial_merges": pulp_merges
+            "pulp_initial_merges": pulp_merges,
+            "pulp_distributor": pulp_distributor,
+            "pulp_publish": pulp_publish,
         }
         return funnel
 

@@ -94,6 +94,7 @@ def start_merge(source_repo_id, target_repo_id):
 
 def set_target(repo_id):
     config = {
+        "distributor_id": "target",
         "distributor_type_id": "yum_distributor",
         "distributor_config": {
             "http": True,
@@ -106,10 +107,15 @@ def set_target(repo_id):
                                 json=config)
     return pulp_reply.json()
 
-def get_targets(repo_id):
+def get_target(repo_id):
     pulp_reply = _get_pulp_url("repositories", repo_id, "distributors")
-    return pulp_reply.json()
+    return pulp_reply.json()[0]
 
+def start_publish(repo_id):
+    config = {"id": "target"}
+    pulp_reply = _post_pulp_url("repositories", repo_id, "actions/publish",
+                                json=config)
+    return pulp_reply.json()
 
 # TODO: Pass through properly structured error information
 class RemotePulpError(Exception): pass
