@@ -18,6 +18,10 @@ copr_url = "https://copr.fedoraproject.org"
 copr_api_path = "/api/coprs/whot/"
 copr_display_path = "/coprs/whot/"
 
+# Example repo URLs:
+# https://copr-be.cloud.fedoraproject.org/results/whot/libevdev/epel-7-x86_64/
+# https://copr-be.cloud.fedoraproject.org/results/whot/libinput-epel7/epel-7-x86_64/
+
 def iter_repos():
     # Get remote repo info from COPR
     copr_reply = requests.get(copr_url + copr_api_path)

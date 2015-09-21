@@ -86,6 +86,13 @@ def start_sync(repo_id):
     pulp_reply = _post_pulp_url("repositories", repo_id, "actions/sync")
     return pulp_reply.json()
 
+def start_merge(source_repo_id, target_repo_id):
+    config = {"source_repo_id": source_repo_id}
+    pulp_reply = _post_pulp_url("repositories", target_repo_id,
+                                "actions/associate", json=config)
+    return pulp_reply.json()
+
+
 # TODO: Pass through properly structured error information
 class RemotePulpError(Exception): pass
 
