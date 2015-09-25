@@ -17,6 +17,7 @@ import requests
 pulp_url = "https://pulpapi/pulp"
 pulp_api_path = "/api/v2/"
 pulp_api_url = pulp_url + pulp_api_path
+pulp_repo_url = "http://localhost/pulp/repos/"
 
 def _access_pulp_url(http_method, *api_segments, **request_kwds):
     url_segments = [pulp_api_url]
@@ -105,7 +106,9 @@ def set_target(repo_id):
     }
     pulp_reply = _post_pulp_url("repositories", repo_id, "distributors",
                                 json=config)
-    return pulp_reply.json()
+    distributor = pulp_reply.json()
+    repo_url = pulp_repo_url + distributor["config"]["relative_url"]
+    return distributor, repo_url
 
 def get_target(repo_id):
     pulp_reply = _get_pulp_url("repositories", repo_id, "distributors")

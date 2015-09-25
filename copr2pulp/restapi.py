@@ -53,7 +53,8 @@ class FunnelSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Funnel
-        fields = ("id", "name", "url", "feeds")
+        fields = ("id", "name", "url", "feeds", "funnel_url")
+        read_only_fields = ("funnel_url",)
 
     def create(self, validated_data):
         funnel = models.Funnel.objects.create(**validated_data)
@@ -64,7 +65,8 @@ class FunnelSerializer(serializers.HyperlinkedModelSerializer):
         pulpapi.wait_for_task(add_importer["spawned_tasks"][0]["task_id"])
         pulp_importer = pulpapi.get_feed(repo_name)
         # Configure the funnel for publishing
-        pulp_distributor = pulpapi.set_target(repo_name)
+        pulp_distributor, funnel_url = pulpapi.set_target(repo_name)
+        funnel.funnel_url = funnel_url
         # Merge content into the funnel from the feed repositories
         #TODO: Specify which feeds to link. For now, always link all of them
         feeds = models.Feed.objects.all()
