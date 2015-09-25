@@ -41,7 +41,7 @@
             ]
         } );
         // Initialize Funnel table
-        function get_feed_URL(feed_id) {
+        function get_feed_details(feed_id) {
             var feed_data = feed_table.data()
             var feed_details = null;
             $.each(feed_data,
@@ -50,7 +50,7 @@
                     return !(obj.type === "feeds" && obj.id === feed_id);
                 }
             );
-            return feed_details.attributes.feed_url;
+            return feed_details.attributes;
         };
         $('#funnels').DataTable( {
             ajax: "{% url 'funnel-list' %}",
@@ -66,6 +66,16 @@
                     return data;
                   }
                 },
+                { title: "Funnel URL", data: "attributes.funnel_url",
+                  render: function ( data, type, row ) {
+                    // For display, format as a hyperlink direct to repo
+                    if ( type === 'display') {
+                        return '<a href="'+data+'">'+data+'</a>'
+                    }
+                    // Otherwise return unmodified
+                    return data;
+                  }
+                },
                 { title: "Feeds", data: "relationships.feeds.data",
                   render: function ( cell_data, type, row_data ) {
                     // For display, format as a list of repo hyperlinks
@@ -75,9 +85,12 @@
                         output.push('<ul>');
                         $.each(cell_data,
                             function(idx, feed_ref) {
-                                output.push('<li>');
-                                output.push(get_feed_URL(feed_ref.id));
-                                output.push('</li>');
+                                var feed_details = get_feed_details(feed_ref.id)
+                                output.push('<li><a href="');
+                                output.push(feed_details.feed_url);
+                                output.push('">');
+                                output.push(feed_details.name);
+                                output.push('</a></li>');
                             }
                         );
                         output.push('</ul>');
