@@ -20,5 +20,12 @@ repofunnel_feeds_url = "http://localhost:8000/api/feed/"
 
 for feed_settings in example_feeds:
     print(feed_settings)
-    reply = requests.post(repofunnel_feeds_url, json=feed_settings)
+    config = {
+        "data": {
+            "type": "feeds",
+            "attributes": feed_settings
+        }
+    }
+
+    reply = requests.post(repofunnel_feeds_url, json=config)
     reply.raise_for_status()
