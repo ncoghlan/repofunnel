@@ -1,19 +1,14 @@
 FROM fedora:22
 MAINTAINER Nick Coghlan <ncoghlan@gmail.com>
 
-# TODO: Migrate over to S2I's separate builder image model
+# TODO: Migrate over to S2I's separate builder image model (once that exists)
 #       That should also avoid caching built wheel's inside the image
 
-# Ensure Python 3 and pip for Python 3 are installed
-RUN dnf -y install python3 python3-pip && \
+# Install Python 3 and pip for Python 3 to handle the back end REST service
+# Also install Node.js, npm & Bower to manage the front end web UI
+RUN dnf -y install python3 python3-pip nodejs npm git && \
     dnf clean all
-
-# Install copr DNF plugin and install patternfly - remove the plugins in the end to keep image small
-RUN dnf -y install dnf-plugins-core && \
-    dnf -y copr enable patternfly/patternfly2 fedora-22-x86_64 && \
-    dnf -y install patternfly2 && \
-    dnf -y remove dnf-plugins-core && \
-    dnf clean all
+RUN npm install -g bower
 
 # Add the app sources
 ADD . /srv/repofunnel
@@ -24,6 +19,7 @@ RUN pyvenv repofunnel && \
     cd repofunnel && \
     source bin/activate && \
     pip3 install -r requirements.txt && \
+    bower --allow-root install patternfly angular-patternfly && \
     ./manage.py makemigrations
 
 # Always run migrations before starting server

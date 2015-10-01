@@ -132,5 +132,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    '/usr/share/patternfly2/',
+    ('components', '/srv/repofunnel/bower_components/patternfly/components'),
+    ('pf', '/srv/repofunnel/bower_components/patternfly/dist'),
+    ('apf', '/srv/repofunnel/bower_components/angular-patternfly/dist'),
 )
