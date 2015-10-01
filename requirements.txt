@@ -3,6 +3,7 @@ django_extensions
 django-debug-toolbar
 werkzeug
 djangorestframework
-djangorestframework-jsonapi
+# djangorestframework-jsonapi
+git+https://github.com/django-json-api/django-rest-framework-json-api.git@develop#egg=django-json-api
 requests
 
