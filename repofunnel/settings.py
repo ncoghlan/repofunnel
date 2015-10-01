@@ -35,17 +35,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'repofunnel',
+    'copr2pulp',
+    'rest_framework',
+    'django_extensions',
+    'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
-    'django_extensions',
-    'rest_framework',
-    'copr2pulp',
-    'repofunnel',
 )
 
 MIDDLEWARE_CLASSES = (
