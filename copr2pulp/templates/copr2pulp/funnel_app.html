@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Funnels:</h2>
+<div ng-app="funnelApp>
+    <h2>Funnels:</h2>
 
-<table id="funnels" class="datatable table table-striped table-bordered"></table>
+    <table id="funnels" class="datatable table table-striped table-bordered"></table>
 
-<h2>Feeds:</h2>
+    <h2>Feeds:</h2>
 
-<table id="feeds" class="datatable table table-striped table-bordered"></table>
+    <table id="feeds" class="datatable table table-striped table-bordered"></table>
+</div>
 
 <script>
     // TODO: Switch this all over to Angular JS
