@@ -135,4 +135,5 @@ STATICFILES_DIRS = (
     ('components', '/srv/repofunnel/bower_components/patternfly/components'),
     ('pf', '/srv/repofunnel/bower_components/patternfly/dist'),
     ('apf', '/srv/repofunnel/bower_components/angular-patternfly/dist'),
+    ('ajs', '/srv/repofunnel/bower_components/angular'),
 )

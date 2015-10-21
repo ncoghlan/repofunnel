@@ -20,8 +20,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular-patternfly": "~2.3.0",
-    "patternfly": "~2.3.0",
+    "angular-patternfly": "~2.4.0",
+    "patternfly": "~2.4.0",
     "angular": "~1.4.7"
   }
 }
